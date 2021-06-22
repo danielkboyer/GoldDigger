@@ -27,12 +27,22 @@ public class Digger : MonoBehaviour
 
     private int _currentStep = 0;
 
+
+    Map map;
+    bool isInit;
+
     // Start is called before the first frame update
     void Start()
     {
         
     }
 
+
+    public void Init(Map map)
+    {
+        this.map = map;
+        isInit = true;
+    }
     /// <summary>
     /// called when the agent reaches their destination and they need to choose where to move next
     /// </summary>
@@ -74,6 +84,9 @@ public class Digger : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (!isInit)
+            return;
+
         _currentTime += Time.deltaTime;
 
         if(_currentTime * Speed >= _moveTime)

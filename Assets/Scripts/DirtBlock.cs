@@ -10,6 +10,9 @@ public class DirtBlock : MonoBehaviour
 
     private int _x;
     private int _y;
+
+    public int HomeBreadCrumbs;
+    public int GoldBreadCrumbs;
     
     // Start is called before the first frame update
     void Start()
