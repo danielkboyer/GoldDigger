@@ -77,7 +77,7 @@ public class battles
         {
             if (pos == "first")
             {
-                if (p2HasCheated == true)
+                if (p1HasCheated == true)
                 {
                     return "cheat";
                 }
@@ -88,7 +88,7 @@ public class battles
             }
             if (pos == "second")
             {
-                if (p1HasCheated == true)
+                if (p2HasCheated == true)
                 {
                     return "cheat";
                 }
