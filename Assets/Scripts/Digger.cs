@@ -27,9 +27,16 @@ public class Digger : MonoBehaviour
 
     private int _currentStep = 0;
 
-
     Map map;
+    
     bool isInit;
+
+    private string mentality;
+    // copycat   - cooperate then copy other player moves
+    // cooperate - always cooperate
+    // cheat     - always cheat
+    // grudger   - cooperate, if cheated, then always cheat
+    // random    - sir rando
 
     // Start is called before the first frame update
     void Start()
@@ -42,6 +49,7 @@ public class Digger : MonoBehaviour
     {
         this.map = map;
         isInit = true;
+        this.mentality = "cooperate";
     }
     /// <summary>
     /// called when the agent reaches their destination and they need to choose where to move next
