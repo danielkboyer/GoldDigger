@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 1782675646374391072}
   - component: {fileID: 4787787279080284403}
   - component: {fileID: 5038133802993146495}
+  - component: {fileID: 6456527100122403249}
   m_Layer: 0
   m_Name: Digger
   m_TagString: Player
@@ -95,7 +96,30 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a1df8f2573d95334ea8c37434be20d6c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Speed: 5
-  DigTime: 5
-  SightDistance: 5
   MoveTowards: 0
+--- !u!61 &6456527100122403249
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6878915848908843911}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.5, y: 0.5}
+    oldSize: {x: 1, y: 1}
+    newSize: {x: 1, y: 1}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  serializedVersion: 2
+  m_Size: {x: 1, y: 1}
+  m_EdgeRadius: 0

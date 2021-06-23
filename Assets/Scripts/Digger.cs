@@ -35,7 +35,7 @@ public class Digger : MonoBehaviour
 
     public void Init(IMap map, DiggerSettings start)
     {
-        this._diggerSettings = new DiggerSettings() {DigTime = start.DigTime,SightDistance = start.SightDistance,Position = new Coord() { x = start.Position.x, y = start.Position.y },Speed = start.Speed };
+        this._diggerSettings = new DiggerSettings() {DigTime = start.DigTime,SightDistance = start.SightDistance,Position = new Coord() { x = start.Position.x, y = start.Position.y },Speed = start.Speed,mentality = new Mentality() { ProbabilityOfFight = start.mentality.ProbabilityOfFight } };
         this._map = map;
         isInit = true;
     }
@@ -107,11 +107,18 @@ public class Digger : MonoBehaviour
         }
 
     }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        var diggerOther = collision.gameObject.GetComponent<Digger>();
+    }
     // Update is called once per frame
     void Update()
     {
         if (!isInit)
             return;
+
+
 
         _currentTime += Time.deltaTime;
 
@@ -141,4 +148,12 @@ public struct DiggerSettings
     public float DigTime;
 
     public int SightDistance;
+
+    public Mentality mentality;
+}
+
+[Serializable]
+public struct Mentality
+{
+    public int ProbabilityOfFight;
 }

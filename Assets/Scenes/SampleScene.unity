@@ -255,6 +255,22 @@ MonoBehaviour:
       Speed: 5
       DigTime: 1
       SightDistance: 2
+      mentality:
+        ProbabilityOfFight: 41
+  - coord:
+      x: 10
+      y: 17
+    TotalDiggers: 10
+    SpawnRate: 2
+    DiggerSetting:
+      Position:
+        x: 0
+        y: 0
+      Speed: 10
+      DigTime: 1
+      SightDistance: 2
+      mentality:
+        ProbabilityOfFight: 20
 --- !u!4 &763897214
 Transform:
   m_ObjectHideFlags: 0
