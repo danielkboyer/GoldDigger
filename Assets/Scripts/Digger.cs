@@ -22,6 +22,9 @@ public class Digger : MonoBehaviour
 
     private int _currentStep = 0;
 
+    /// <summary>
+    /// Time taken to stop and dig
+    /// </summary>
     private float DigTime;
 
     IMap _map;
@@ -119,7 +122,6 @@ public class Digger : MonoBehaviour
             }
             
             ChooseMove(upBlocks, downBlocks, rightBlocks, leftBlocks, currentBlock);
-            UnityEngine.Debug.Log(this.DigTime);
             if (!_map.GetBlock(_diggerSettings.Position.x, _diggerSettings.Position.y)._isAir)
             { 
                 this.DigTime += 1f; // penalty for diggin (should be a parameter)
