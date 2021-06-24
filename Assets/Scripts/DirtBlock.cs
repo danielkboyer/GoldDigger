@@ -8,8 +8,8 @@ public class DirtBlock : MonoBehaviour
 
     private bool _isDug;
 
-    private int _x;
-    private int _y;
+    public int _x;
+    public int _y;
 
     public int HomeBreadCrumbs;
     public int GoldBreadCrumbs;
@@ -37,5 +37,10 @@ public class DirtBlock : MonoBehaviour
     void Update()
     {
         
+    }
+    public void SetIsAir(bool air)
+    {
+        UnityEngine.Debug.Log(string.Format("changing my isair from {0}", this._isAir ));
+        this._isAir = air;
     }
 }
