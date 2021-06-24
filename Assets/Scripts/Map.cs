@@ -83,7 +83,7 @@ public class Map : MonoBehaviour,IMap
             //Initialize the base
             var baseSpawned = Instantiate(BasePrefab, new Vector2(BaseSpawnSettings[x].coord.x, BaseSpawnSettings[x].coord.y), Quaternion.identity).GetComponent<Base>();
             //Call Init with map, diggerprefab, and base settings
-            baseSpawned.Init(this, DiggerPrefab, BaseSpawnSettings[x]);
+            baseSpawned.Init(this, DiggerPrefab, BaseSpawnSettings[x], x);
         }
     }
 

@@ -27,6 +27,8 @@ public class Digger : MonoBehaviour
     /// </summary>
     private float DigTime;
 
+    private int _baseID;
+
     IMap _map;
     bool isInit;
 
@@ -44,7 +46,7 @@ public class Digger : MonoBehaviour
     }
 
 
-    public void Init(IMap map, DiggerSettings start)
+    public void Init(IMap map, DiggerSettings start, int baseID)
     {
         this._diggerSettings = new DiggerSettings() {
             DigTime = start.DigTime,
@@ -58,6 +60,7 @@ public class Digger : MonoBehaviour
         this._map = map;
         isInit = true;
         this.DigTime = start.DigTime;
+        this._baseID = baseID;
     }
     /// <summary>
     /// called when the agent reaches their destination and they need to choose where to move next
@@ -145,7 +148,13 @@ public class Digger : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
+        // digger will only fight another digger that is from another base
+        // and only the digger from > baseID will initiate the funct call
         var diggerOther = collision.gameObject.GetComponent<Digger>();
+        if (this._baseID > diggerOther._baseID)
+        {
+
+        }
     }
     // Update is called once per frame
     void Update()
