@@ -122,7 +122,8 @@ public class Digger : MonoBehaviour
             }
             
             ChooseMove(upBlocks, downBlocks, rightBlocks, leftBlocks, currentBlock);
-            if (!_map.GetBlock(_diggerSettings.Position.x, _diggerSettings.Position.y)._isAir)
+            
+            if (_map.GetBlock(_diggerSettings.Position.x, _diggerSettings.Position.y) != null && !_map.GetBlock(_diggerSettings.Position.x, _diggerSettings.Position.y)._isAir)
             { 
                 this.DigTime += 1f; // penalty for diggin (should be a parameter)
                 currentBlock.SetIsAir(true);
