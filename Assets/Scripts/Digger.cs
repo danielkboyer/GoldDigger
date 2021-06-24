@@ -22,6 +22,10 @@ public class Digger : MonoBehaviour
 
     private int _currentStep = 0;
 
+    /// <summary>
+    /// Time taken to stop and dig
+    /// </summary>
+    private float DigTime;
 
     IMap _map;
     bool isInit;
@@ -42,17 +46,26 @@ public class Digger : MonoBehaviour
 
     public void Init(IMap map, DiggerSettings start)
     {
-        this._diggerSettings = new DiggerSettings() {DigTime = start.DigTime,SightDistance = start.SightDistance,Position = new Coord() { x = start.Position.x, y = start.Position.y },Speed = start.Speed,mentality = new Mentality() { ProbabilityOfFight = start.mentality.ProbabilityOfFight } };
+        this._diggerSettings = new DiggerSettings() {
+            DigTime = start.DigTime,
+            SightDistance = start.SightDistance,
+            Position = new Coord() { x = start.Position.x, y = start.Position.y },
+            Speed = start.Speed,
+            mentality = new Mentality() { ProbabilityOfFight = start.mentality.ProbabilityOfFight },
+            moveTowards = start.moveTowards
+        };
+        this.MoveTowards = _diggerSettings.moveTowards;
         this._map = map;
         isInit = true;
-        this.mentality = "cooperate";
+        this.DigTime = start.DigTime;
     }
     /// <summary>
     /// called when the agent reaches their destination and they need to choose where to move next
     /// </summary>
     void ChooseMove(DirtBlock[] up, DirtBlock[] down, DirtBlock[] right, DirtBlock[] left, DirtBlock on)
     {
-
+        
+        
     }
     /// <summary>
     /// Called when the agent should move
@@ -80,6 +93,8 @@ public class Digger : MonoBehaviour
 
         if (_currentStep == 20)
         {
+            _currentStep = 0;
+
             //update the players position
             if (MoveTowards == Move.LEFT)
             {
@@ -87,31 +102,43 @@ public class Digger : MonoBehaviour
             }
             else if (MoveTowards == Move.DOWN)
             {
-                _diggerSettings.Position.y += 1;
+                _diggerSettings.Position.y -= 1;
             }
             else if (MoveTowards == Move.UP)
             {
-                _diggerSettings.Position.y -= 1;
+                _diggerSettings.Position.y += 1;
             }
             else
             {
                 _diggerSettings.Position.x += 1;
             }
-            _currentStep = 0;
 
             DirtBlock[] upBlocks = new DirtBlock[_diggerSettings.SightDistance];
             DirtBlock[] downBlocks = new DirtBlock[_diggerSettings.SightDistance];
             DirtBlock[] leftBlocks = new DirtBlock[_diggerSettings.SightDistance];
             DirtBlock[] rightBlocks = new DirtBlock[_diggerSettings.SightDistance];
+            DirtBlock currentBlock = _map.GetBlock(_diggerSettings.Position.x, _diggerSettings.Position.y);
+
             for (int x = 0; x < _diggerSettings.SightDistance; x++)
             {
+
                 upBlocks[x] = _map.GetBlock(_diggerSettings.Position.x, _diggerSettings.Position.y - 1 - x);
                 downBlocks[x] = _map.GetBlock(_diggerSettings.Position.x, _diggerSettings.Position.y + 1 + x);
                 leftBlocks[x] = _map.GetBlock(_diggerSettings.Position.x - 1 - x, _diggerSettings.Position.y);
                 rightBlocks[x] = _map.GetBlock(_diggerSettings.Position.x + 1 + x, _diggerSettings.Position.y);
             }
+            
+            ChooseMove(upBlocks, downBlocks, rightBlocks, leftBlocks, currentBlock);
+            
+            if (_map.GetBlock(_diggerSettings.Position.x, _diggerSettings.Position.y) != null && !_map.GetBlock(_diggerSettings.Position.x, _diggerSettings.Position.y)._isAir)
+            { 
+                this.DigTime += 1f; // penalty for diggin (should be a parameter)
+                currentBlock.SetIsAir(true);
+                currentBlock.gameObject.GetComponent<Renderer>().enabled = false;
+                
+            }
 
-            ChooseMove(upBlocks, downBlocks, rightBlocks, leftBlocks, _map.GetBlock(_diggerSettings.Position.x, _diggerSettings.Position.y));
+
         }
 
     }
@@ -127,14 +154,19 @@ public class Digger : MonoBehaviour
             return;
 
 
-
-        _currentTime += Time.deltaTime;
-
-        if (_currentTime * _diggerSettings.Speed >= _moveTime)
+        if (this.DigTime > 0)
         {
-            _currentTime = 0;
-            MoveAgent();
+            this.DigTime -= Time.deltaTime;
+        }
+        else
+        {
+            _currentTime += Time.deltaTime;
+            if (_currentTime * _diggerSettings.Speed >= _moveTime)
+            {
+                _currentTime = 0;
+                MoveAgent();
 
+            }
         }
     }
 }
@@ -158,6 +190,10 @@ public struct DiggerSettings
     public int SightDistance;
 
     public Mentality mentality;
+
+    public Move moveTowards;
+
+
 }
 
 [Serializable]
