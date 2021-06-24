@@ -179,8 +179,6 @@ public struct DiggerSettings
 
     public float DigTime;
 
-    public float DigPenalty;
-
     public int SightDistance;
 
     public Mentality mentality;
