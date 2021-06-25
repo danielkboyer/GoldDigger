@@ -237,8 +237,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   GridSizeX: 30
   GridSizeY: 30
-  GoldAmount: 20
-  GoldSize: 5
+  GoldAmount: 3
+  GoldSize: 1000
   GridAirY: 3
   DirtBlockGameObject: {fileID: 3497553963407806859, guid: bfc62d93ea0c22d45a8cddd7e56c19b0, type: 3}
   MainCamera: {fileID: 519420028}
@@ -248,33 +248,35 @@ MonoBehaviour:
   - coord:
       x: 15
       y: 27
-    TotalDiggers: 20
-    SpawnRate: 1
+    TotalDiggers: 50
+    SpawnRate: 0.1
     DiggerSetting:
       Position:
         x: 0
         y: 0
-      Speed: 20
+      Speed: 60
       DigPenalty: 0.5
-      SightDistance: 5
+      SightDistance: 20
       mentality:
         ProbabilityOfFight: 41
       moveTowards: 0
+      color: {r: 1, g: 0, b: 0, a: 1}
   - coord:
-      x: 10
+      x: 11
       y: 27
-    TotalDiggers: 20
-    SpawnRate: 1
+    TotalDiggers: 50
+    SpawnRate: 0.1
     DiggerSetting:
       Position:
         x: 0
         y: 0
-      Speed: 20
+      Speed: 60
       DigPenalty: 0.5
-      SightDistance: 5
+      SightDistance: 20
       mentality:
-        ProbabilityOfFight: 20
+        ProbabilityOfFight: 41
       moveTowards: 0
+      color: {r: 1, g: 0.9606708, b: 0.6179246, a: 1}
 --- !u!4 &763897214
 Transform:
   m_ObjectHideFlags: 0
