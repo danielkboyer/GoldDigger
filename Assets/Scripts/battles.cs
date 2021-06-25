@@ -18,11 +18,11 @@ public class battles
     private bool p1HasCheated;
     private bool p2HasCheated;
 
-    public battles(int p1S, string p1M, int p2S, string p2M) 
+    public battles(string p1M, string p2M) 
     {
-        this.p1Score = p1S;
+        //this.p1Score = p1S;
         this.p1Mentality = p1M;
-        this.p2Score = p2S;
+        //this.p2Score = p2S;
         this.p2Mentality = p2M;
         COUNT = 5;
         p1choices = new string[COUNT];

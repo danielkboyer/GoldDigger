@@ -32,7 +32,13 @@ public class Digger : MonoBehaviour
     IMap _map;
     bool isInit;
 
-    private string mentality;
+    private bool _hasGold;
+
+    private bool _isFighting;
+
+    private bool _isStunned;
+
+    private string _mentality;
     // copycat   - cooperate then copy other player moves
     // cooperate - always cooperate
     // cheat     - always cheat
@@ -61,6 +67,10 @@ public class Digger : MonoBehaviour
         isInit = true;
         this.DigTime = start.DigTime;
         this._baseID = baseID;
+        this._mentality = "cooperative";
+        this._isFighting = false;
+        this._hasGold = false;
+        this._isStunned = false;
     }
     /// <summary>
     /// called when the agent reaches their destination and they need to choose where to move next
@@ -153,7 +163,26 @@ public class Digger : MonoBehaviour
         var diggerOther = collision.gameObject.GetComponent<Digger>();
         if (this._baseID > diggerOther._baseID)
         {
-
+            this._isFighting = true;
+            battles battle = new battles(this._mentality, diggerOther._mentality);
+            if (battle.battle() == 0)
+            {
+                if (this._hasGold == false && diggerOther._hasGold == true)
+                {
+                    diggerOther._hasGold = false;
+                    this._hasGold = true;
+                }
+                diggerOther._isStunned = true;
+            }
+            else
+            {
+                if (this._hasGold == true && diggerOther._hasGold == false)
+                {
+                    diggerOther._hasGold = true;
+                    this._hasGold = false;
+                }
+                this._isStunned = true;
+            }
         }
     }
     // Update is called once per frame
@@ -161,7 +190,8 @@ public class Digger : MonoBehaviour
     {
         if (!isInit)
             return;
-
+        if (_isFighting)
+            return;
 
         if (this.DigTime > 0)
         {
