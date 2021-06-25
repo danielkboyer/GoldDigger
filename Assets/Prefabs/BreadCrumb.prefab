@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &3497553963407806859
+--- !u!1 &5807123348569116545
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,37 +8,37 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 5787704440153932647}
-  - component: {fileID: 7661415229204932231}
-  - component: {fileID: -5001897225222398294}
-  m_Layer: 7
-  m_Name: DirtBlock
+  - component: {fileID: 2767826830895125523}
+  - component: {fileID: 7452364755831291881}
+  - component: {fileID: 4300138549646909008}
+  m_Layer: 0
+  m_Name: BreadCrumb
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &5787704440153932647
+--- !u!4 &2767826830895125523
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3497553963407806859}
+  m_GameObject: {fileID: 5807123348569116545}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 2.8900845, y: 0.5161096, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalPosition: {x: -1.780067, y: 14.509644, z: 0}
+  m_LocalScale: {x: 0.2, y: 0.2, z: 0.2}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!212 &7661415229204932231
+--- !u!212 &7452364755831291881
 SpriteRenderer:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3497553963407806859}
+  m_GameObject: {fileID: 5807123348569116545}
   m_Enabled: 1
   m_CastShadows: 0
   m_ReceiveShadows: 0
@@ -69,11 +69,11 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: -522062595
-  m_SortingLayer: 1
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 7482667652216324306, guid: 48e93eef0688c4a259cb0eddcd8661f7, type: 3}
-  m_Color: {r: 0.4339623, g: 0.33742514, b: 0.24768601, a: 1}
+  m_Sprite: {fileID: -2413806693520163455, guid: ebe73ca9363db456bacf42c025bb4847, type: 3}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -83,19 +83,18 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &-5001897225222398294
+--- !u!114 &4300138549646909008
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3497553963407806859}
+  m_GameObject: {fileID: 5807123348569116545}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c50b1cc036011b14b8a4bb5dd07266f7, type: 3}
+  m_Script: {fileID: 11500000, guid: 0e464200e9e84214ba80633771a55af2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _isAir: 0
-  _isGold: 0
-  GoldAmount: 0
-  BreadCrumbPrefab: {fileID: 5807123348569116545, guid: 907d669cdf77abe4492360e9c0148b4f, type: 3}
+  HomeCrumb: 0
+  GoldCrumb: 0
+  AliveTime: 5
