@@ -23,9 +23,14 @@ public class Digger : MonoBehaviour
     private int _currentStep = 0;
 
     /// <summary>
-    /// Time taken to stop and dig
+    /// Time left to stop and dig
     /// </summary>
     private float DigTime;
+
+    /// <summary>
+    /// Penalty for digging
+    /// </summary>
+    private float DigPenalty;
 
     private int _baseID;
 
@@ -50,6 +55,7 @@ public class Digger : MonoBehaviour
     {
         this._diggerSettings = new DiggerSettings() {
             DigTime = start.DigTime,
+            DigPenalty = start.DigPenalty,
             SightDistance = start.SightDistance,
             Position = new Coord() { x = start.Position.x, y = start.Position.y },
             Speed = start.Speed,
@@ -60,6 +66,7 @@ public class Digger : MonoBehaviour
         this._map = map;
         isInit = true;
         this.DigTime = start.DigTime;
+        this.DigPenalty = start.DigPenalty;
         this._baseID = baseID;
     }
     /// <summary>
@@ -67,7 +74,50 @@ public class Digger : MonoBehaviour
     /// </summary>
     void ChooseMove(DirtBlock[] up, DirtBlock[] down, DirtBlock[] right, DirtBlock[] left, DirtBlock on)
     {
-        
+        System.Random random = new System.Random();
+        double randomnumber = random.NextDouble();
+        double upScore = random.NextDouble(); 
+        double leftScore = random.NextDouble(); 
+        double rightScore = random.NextDouble(); 
+        double downScore = random.NextDouble();
+
+        if (_map.GetBlock(_diggerSettings.Position.x, _diggerSettings.Position.y + 1) == null)
+        {
+            upScore = -double.MaxValue;
+        }
+        if (_map.GetBlock(_diggerSettings.Position.x - 1 , _diggerSettings.Position.y) == null)
+        {
+            leftScore = -double.MaxValue;
+        }
+        if (_map.GetBlock(_diggerSettings.Position.x + 1 , _diggerSettings.Position.y) == null)
+        {
+            rightScore = -double.MaxValue;
+        }
+        if (_map.GetBlock(_diggerSettings.Position.x, _diggerSettings.Position.y - 1) == null)
+        {
+            downScore = -double.MaxValue;
+        }
+
+
+        Move next = Move.DOWN;
+        double maxScore = downScore;
+        if (upScore > maxScore)
+        {
+            maxScore = upScore;
+            next = Move.UP;
+        }
+        if (leftScore > maxScore)
+        {
+            maxScore = leftScore;
+            next = Move.LEFT;
+        } if (rightScore > maxScore)
+        {
+            maxScore = rightScore;
+            next = Move.RIGHT;
+        }
+
+        MoveTowards = next;
+
         
     }
     /// <summary>
@@ -134,14 +184,11 @@ public class Digger : MonoBehaviour
             ChooseMove(upBlocks, downBlocks, rightBlocks, leftBlocks, currentBlock);
             
             if (_map.GetBlock(_diggerSettings.Position.x, _diggerSettings.Position.y) != null && !_map.GetBlock(_diggerSettings.Position.x, _diggerSettings.Position.y)._isAir)
-            { 
-                this.DigTime += 1f; // penalty for diggin (should be a parameter)
+            {
+                this.DigTime += this.DigPenalty;
                 currentBlock.SetIsAir(true);
                 currentBlock.gameObject.GetComponent<Renderer>().enabled = false;
-                
             }
-
-
         }
 
     }
@@ -170,6 +217,7 @@ public class Digger : MonoBehaviour
         else
         {
             _currentTime += Time.deltaTime;
+            this.DigTime = 0;
             if (_currentTime * _diggerSettings.Speed >= _moveTime)
             {
                 _currentTime = 0;
@@ -195,6 +243,8 @@ public struct DiggerSettings
     public float Speed;
 
     public float DigTime;
+
+    public float DigPenalty;
 
     public int SightDistance;
 
