@@ -25,7 +25,7 @@ public class Digger : MonoBehaviour
     /// <summary>
     /// Time left to stop and dig
     /// </summary>
-    private float DigTime;
+    private float DigTime = 0;
 
     /// <summary>
     /// Penalty for digging
@@ -54,7 +54,6 @@ public class Digger : MonoBehaviour
     public void Init(IMap map, DiggerSettings start, int baseID)
     {
         this._diggerSettings = new DiggerSettings() {
-            DigTime = start.DigTime,
             DigPenalty = start.DigPenalty,
             SightDistance = start.SightDistance,
             Position = new Coord() { x = start.Position.x, y = start.Position.y },
@@ -65,7 +64,6 @@ public class Digger : MonoBehaviour
         this.MoveTowards = _diggerSettings.moveTowards;
         this._map = map;
         isInit = true;
-        this.DigTime = start.DigTime;
         this.DigPenalty = start.DigPenalty;
         this._baseID = baseID;
     }
@@ -242,7 +240,6 @@ public struct DiggerSettings
     public Coord Position;
     public float Speed;
 
-    public float DigTime;
 
     public float DigPenalty;
 
