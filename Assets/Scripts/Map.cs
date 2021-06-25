@@ -1,5 +1,7 @@
 using Assets.Scripts;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class Map : MonoBehaviour,IMap
@@ -18,6 +20,14 @@ public class Map : MonoBehaviour,IMap
 
     public int GridSizeY;
 
+    /// <summary>
+    /// the amount of gold blocks to be placed in the map
+    /// </summary>
+    public int GoldAmount;
+    /// <summary>
+    /// the Gold Size of those blocks
+    /// </summary>
+    public int GoldSize;
     /// <summary>
     /// How much air above the dirt
     /// the x matches the GridSizeX
@@ -42,9 +52,21 @@ public class Map : MonoBehaviour,IMap
     /// an array of spawn coordinates, will create a new base per spawn coordinate. (set in inspector)
     /// </summary>
     public BaseSetting[] BaseSpawnSettings;
+
+
+    private System.Random _random;
     // Start is called before the first frame update
     void Start()
     {
+        _random = new System.Random();
+
+        List<Coord> goldCoords = new List<Coord>();
+        for(int x = 0; x < GoldAmount; x++)
+        {
+            var coord = GetRandomGridPos(GridSizeX, GridSizeY, GridAirY,goldCoords);
+            goldCoords.Add(coord);
+        }
+
         _grid = new Grid(GridSizeX, GridSizeY);
 
         float spacingX = DirtBlockGameObject.transform.localScale.x;
@@ -61,8 +83,9 @@ public class Map : MonoBehaviour,IMap
                 var gridBlockObject = Instantiate(DirtBlockGameObject, new Vector2(currentX, currentY),Quaternion.identity);
                 var db = gridBlockObject.GetComponent<DirtBlock>();
 
+             
                 //check if this block should be air or not
-                db.Init(x, y, y >= GridSizeY - GridAirY, false);
+                db.Init(x, y, y >= GridSizeY - GridAirY, false, goldCoords.Any(t => t.x == x && t.y == y),GoldAmount);
 
                 _grid.AddBlock(db, x, y);
 
@@ -87,6 +110,18 @@ public class Map : MonoBehaviour,IMap
         }
     }
 
+
+    Coord GetRandomGridPos(int width, int height, int air,List<Coord> prevGridPos)
+    {
+        int y = _random.Next(0, height - air);
+        int x = _random.Next(0, width);
+
+        if(prevGridPos.Any(t=>t.x == x && t.y == y))
+        {
+            return GetRandomGridPos(width, height, air, prevGridPos);
+        }
+        return new Coord() { x = x, y = y };
+    }
     // Update is called once per frame
     void Update()
     {
