@@ -34,6 +34,8 @@ public class Digger : MonoBehaviour
     private float DigPenalty;
 
     private int _baseID;
+    private int baseX;
+    private int baseY;
 
     IMap _map;
     bool isInit;
@@ -59,7 +61,7 @@ public class Digger : MonoBehaviour
     }
 
 
-    public void Init(IMap map, DiggerSettings start, int baseID, int id)
+    public void Init(IMap map, DiggerSettings start, int baseID, int id, int baseX, int baseY)
     {
         this._diggerSettings = new DiggerSettings() {
             DigPenalty = start.DigPenalty,
@@ -74,6 +76,8 @@ public class Digger : MonoBehaviour
         isInit = true;
         this.DigPenalty = start.DigPenalty;
         this._baseID = baseID;
+        this.baseX = baseX;
+        this.baseY = baseY;
         if (baseID == 0)
         {
             this._mentality = "cooperate";
@@ -120,12 +124,41 @@ public class Digger : MonoBehaviour
         {
             if(up.Any(t=>t != null))
                 upScore += Math.Pow(up.Where(t => t != null).Max(t => t.GetOldestHome(_baseID)),2);
+                foreach (DirtBlock block in up)
+            {
+                if (block != null && this.baseX == block._x && this.baseY == block._y)
+                {
+                    upScore = double.MaxValue;
+                }
+            }
+
             if (down.Any(t => t != null))
                 downScore += Math.Pow(down.Where(t => t != null).Max(t => t.GetOldestHome(_baseID)), 2);
+                foreach (DirtBlock block in down)
+            {
+                if (block != null && this.baseX == block._x && this.baseY == block._y)
+                {
+                    downScore = double.MaxValue;
+                }
+            }
             if (left.Any(t => t != null))
                 leftScore += Math.Pow(left.Where(t => t != null).Max(t => t.GetOldestHome(_baseID)), 2);
+                foreach (DirtBlock block in left)
+            {
+                if (block != null && this.baseX == block._x && this.baseY == block._y)
+                {
+                    leftScore = double.MaxValue;
+                }
+            }
             if (right.Any(t => t != null))
                 rightScore += Math.Pow(right.Where(t => t != null).Max(t => t.GetOldestHome(_baseID)), 2);
+                foreach (DirtBlock block in right)
+            {
+                if (block != null && this.baseX == block._x && this.baseY == block._y)
+                {
+                    rightScore = double.MaxValue;
+                }
+            }
             
         }else
         {
