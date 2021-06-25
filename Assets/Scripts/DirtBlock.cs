@@ -53,6 +53,7 @@ public class DirtBlock : MonoBehaviour
         {
             if (!_breadCrumbs[x].IsAlive(Time.deltaTime))
             {
+                Destroy(_breadCrumbs[x].gameObject);
                 _breadCrumbs.RemoveAt(x);
                 continue;
             }
