@@ -291,7 +291,6 @@ public class Digger : MonoBehaviour
 
     private void DiggerBattle(Collider2D collision)
     {
-        Debug.Log("Digger Collision: " + collision);
         var diggerOther = collision.gameObject.GetComponent<Digger>();
         if (diggerOther._isStunned || _isStunned)
         {
@@ -328,6 +327,7 @@ public class Digger : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
+        Debug.Log(collision.tag);
         if (collision.tag != "Digger")
             return;
         // digger will only fight another digger that is from another base
