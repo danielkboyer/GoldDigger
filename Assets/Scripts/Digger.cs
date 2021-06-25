@@ -43,6 +43,8 @@ public class Digger : MonoBehaviour
 
     private bool _isStunned;
 
+    private float _stunTime;
+
     private string _mentality;
     // copycat   - cooperate then copy other player moves
     // cooperate - always cooperate
@@ -76,6 +78,7 @@ public class Digger : MonoBehaviour
         this._isFighting = false;
         this._hasGold = false;
         this._isStunned = false;
+        this._stunTime = 0;
     }
     /// <summary>
     /// called when the agent reaches their destination and they need to choose where to move next
@@ -280,6 +283,17 @@ public class Digger : MonoBehaviour
         }
 
     }
+    private bool CheckTime()
+    {
+        if (this._stunTime % 60 < 2)
+        {
+            return false;
+        }
+        else
+        {
+            return false;
+        }
+    }
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
@@ -288,6 +302,7 @@ public class Digger : MonoBehaviour
         var diggerOther = collision.gameObject.GetComponent<Digger>();
         if (this._baseID > diggerOther._baseID)
         {
+            Debug.Log("collision");
             this._isFighting = true;
             battles battle = new battles(this._mentality, diggerOther._mentality);
             if (battle.battle() == 0)
@@ -298,6 +313,7 @@ public class Digger : MonoBehaviour
                     this._hasGold = true;
                 }
                 diggerOther._isStunned = true;
+                diggerOther._stunTime = Time.deltaTime;
             }
             else
             {
@@ -307,6 +323,7 @@ public class Digger : MonoBehaviour
                     this._hasGold = false;
                 }
                 this._isStunned = true;
+                this._stunTime = Time.deltaTime;
             }
         }
     }
@@ -317,6 +334,17 @@ public class Digger : MonoBehaviour
             return;
         if (_isFighting)
             return;
+        if (_isStunned)
+        {
+            if (CheckTime())
+            {
+                return;
+            }
+            else
+            {
+                this._isStunned = false;
+            }
+        }
 
         if (this.DigTime > 0)
         {
@@ -335,6 +363,8 @@ public class Digger : MonoBehaviour
         }
     }
 }
+
+
 
 public enum Move
 {
