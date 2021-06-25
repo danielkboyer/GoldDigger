@@ -1,5 +1,6 @@
 using Assets.Scripts;
 using System;
+using System.Linq;
 using UnityEngine;
 
 public class Digger : MonoBehaviour
@@ -25,7 +26,7 @@ public class Digger : MonoBehaviour
     /// <summary>
     /// Time left to stop and dig
     /// </summary>
-    private float DigTime = 0;
+    public float DigTime = 0;
 
     /// <summary>
     /// Penalty for digging
@@ -43,8 +44,7 @@ public class Digger : MonoBehaviour
 
     private bool _isStunned;
 
-    private float _stunTime;
-
+    private float STUN = 3;
     private string _mentality;
     // copycat   - cooperate then copy other player moves
     // cooperate - always cooperate
@@ -80,7 +80,6 @@ public class Digger : MonoBehaviour
         this._isFighting = false;
         this._hasGold = false;
         this._isStunned = false;
-        this._stunTime = 0;
         this.Id = baseID + " " + id;
     }
     /// <summary>
@@ -115,68 +114,26 @@ public class Digger : MonoBehaviour
 
         if (this._hasGold)
         {
-            foreach (DirtBlock block in up)
-            {
-                if (!(block == null))
-                {
-                    upScore += block.GetOldestHome(_baseID) * 2;
-
-                }
-            }
-            foreach (DirtBlock block in down)
-            {
-                if (!(block == null))
-                {
-                    downScore += block.GetOldestHome(_baseID) * 2;
-                }
-            }
-            foreach (DirtBlock block in left)
-            {
-                if (!(block == null))
-                {
-                    leftScore += block.GetOldestHome(_baseID) * 2;
-                }
-            }
-            foreach (DirtBlock block in right)
-            {
-                if (!(block == null))
-                {
-                    rightScore += block.GetOldestHome(_baseID) * 2;
-                }
-            }
-
+            if(up.Any(t=>t != null))
+                upScore += Math.Pow(up.Where(t => t != null).Max(t => t.GetOldestHome(_baseID)),2);
+            if (down.Any(t => t != null))
+                downScore += Math.Pow(down.Where(t => t != null).Max(t => t.GetOldestHome(_baseID)), 2);
+            if (left.Any(t => t != null))
+                leftScore += Math.Pow(left.Where(t => t != null).Max(t => t.GetOldestHome(_baseID)), 2);
+            if (right.Any(t => t != null))
+                rightScore += Math.Pow(right.Where(t => t != null).Max(t => t.GetOldestHome(_baseID)), 2);
             
         }else
         {
-            
-            foreach (DirtBlock block in up)
-            {
-                if (!(block == null))
-                {
-                    upScore += block.GetOldestGold(_baseID) * 2;
-                }
-            }
-            foreach (DirtBlock block in down)
-            {
-                if (!(block == null))
-                {
-                    downScore += block.GetOldestGold(_baseID) * 2;
-                }
-            }
-            foreach (DirtBlock block in left)
-            {
-                if (!(block == null))
-                {
-                    leftScore += block.GetOldestGold(_baseID) * 2;
-                }
-            }
-            foreach (DirtBlock block in right)
-            {
-                if (!(block == null))
-                {
-                    rightScore += block.GetOldestGold(_baseID) * 2;
-                }
-            }
+
+            if (up.Any(t => t != null))
+                upScore += Math.Pow(up.Where(t => t != null).Max(t => t.GetOldestGold(_baseID)), 2);
+            if (down.Any(t => t != null))
+                downScore += Math.Pow(down.Where(t => t != null).Max(t => t.GetOldestGold(_baseID)), 2);
+            if (left.Any(t => t != null))
+                leftScore += Math.Pow(left.Where(t => t != null).Max(t => t.GetOldestGold(_baseID)), 2);
+            if (right.Any(t => t != null))
+                rightScore += Math.Pow(right.Where(t => t != null).Max(t => t.GetOldestGold(_baseID)), 2);
 
         }
 
@@ -272,7 +229,7 @@ public class Digger : MonoBehaviour
                 rightBlocks[x] = _map.GetBlock(_diggerSettings.Position.x + 1 + x, _diggerSettings.Position.y);
             }
             
-            if (currentBlock._isGold && currentBlock.GoldAmount > 0)
+            if (currentBlock._isGold)
             {
                 this._hasGold = true;
                 currentBlock.AddGoldCrumb(Id);
@@ -290,29 +247,24 @@ public class Digger : MonoBehaviour
         }
 
     }
-    private bool CheckTime()
-    {
-        if (this._stunTime % 60 < 2)
-        {
-            return false;
-        }
-        else
-        {
-            return false;
-        }
-    }
 
-    private void OnCollisionEnter2D(Collision2D collision)
+    private void DiggerBattle(Collider2D collision)
     {
+
         // digger will only fight another digger that is from another base
         // and only the digger from > baseID will initiate the funct call
+        if (collision.tag != "Digger")
+            return;
         var diggerOther = collision.gameObject.GetComponent<Digger>();
+        if (diggerOther._isStunned || _isStunned)
+        {
+            return;
+        }
         if (this._baseID > diggerOther._baseID)
         {
-            Debug.Log("collision");
-            this._isFighting = true;
             battles battle = new battles(this._mentality, diggerOther._mentality);
-            if (battle.battle() == 0)
+            int result = battle.battle();
+            if (result == 0)
             {
                 if (this._hasGold == false && diggerOther._hasGold == true)
                 {
@@ -320,9 +272,9 @@ public class Digger : MonoBehaviour
                     this._hasGold = true;
                 }
                 diggerOther._isStunned = true;
-                diggerOther._stunTime = Time.deltaTime;
+                diggerOther.DigTime += STUN;
             }
-            else
+            else if (result == 1)
             {
                 if (this._hasGold == true && diggerOther._hasGold == false)
                 {
@@ -330,9 +282,31 @@ public class Digger : MonoBehaviour
                     this._hasGold = false;
                 }
                 this._isStunned = true;
-                this._stunTime = Time.deltaTime;
+                this.DigTime += STUN;
             }
+            else
+                return;
         }
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        Debug.Log("collision");
+
+        HandleBaseCollision(collision);
+        DiggerBattle(collision);
+    }
+
+    void HandleBaseCollision(Collider2D collider)
+    {
+        if (collider.tag != "Base")
+            return;
+
+        if (!_hasGold)
+            return;
+        var baseScript = collider.gameObject.GetComponent<Base>();
+        baseScript._totalGold += 1;
+        _hasGold = false;
     }
     // Update is called once per frame
     void Update()
@@ -341,20 +315,14 @@ public class Digger : MonoBehaviour
             return;
         if (_isFighting)
             return;
-        if (_isStunned)
-        {
-            if (CheckTime())
-            {
-                return;
-            }
-            else
-            {
-                this._isStunned = false;
-            }
-        }
+        
 
         if (this.DigTime > 0)
         {
+            if(_isStunned == true)
+            {
+                _isStunned = false;
+            }
             this.DigTime -= Time.deltaTime;
         }
         else

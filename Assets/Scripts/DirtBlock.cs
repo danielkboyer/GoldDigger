@@ -69,7 +69,7 @@ public class DirtBlock : MonoBehaviour
         if (this.GoldAmount <= 0)
         {
             this.gameObject.GetComponent<Renderer>().enabled = false;
-            this._isDug = true;
+            this._isGold = false;
 
         }
     }

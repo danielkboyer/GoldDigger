@@ -235,8 +235,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e4a9973f8d579034fa79e61c854ef585, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GridSizeX: 20
-  GridSizeY: 20
+  GridSizeX: 30
+  GridSizeY: 30
   GoldAmount: 20
   GoldSize: 5
   GridAirY: 3
@@ -247,31 +247,31 @@ MonoBehaviour:
   BaseSpawnSettings:
   - coord:
       x: 15
-      y: 17
-    TotalDiggers: 5
+      y: 27
+    TotalDiggers: 20
     SpawnRate: 1
     DiggerSetting:
       Position:
         x: 0
         y: 0
-      Speed: 5
-      DigPenalty: 1
-      SightDistance: 2
+      Speed: 20
+      DigPenalty: 0.5
+      SightDistance: 5
       mentality:
         ProbabilityOfFight: 41
       moveTowards: 0
   - coord:
       x: 10
-      y: 17
-    TotalDiggers: 10
-    SpawnRate: 2
+      y: 27
+    TotalDiggers: 20
+    SpawnRate: 1
     DiggerSetting:
       Position:
         x: 0
         y: 0
-      Speed: 10
-      DigPenalty: 1
-      SightDistance: 2
+      Speed: 20
+      DigPenalty: 0.5
+      SightDistance: 5
       mentality:
         ProbabilityOfFight: 20
       moveTowards: 0

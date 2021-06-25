@@ -6,7 +6,7 @@ using UnityEngine;
 public class Base : MonoBehaviour,IMap
 {
 
-    private int _totalGold;
+    public int _totalGold;
 
     private int _currentDiggers = 0;
 
