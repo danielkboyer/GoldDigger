@@ -117,6 +117,7 @@ public class Digger : MonoBehaviour
                 if (!(block == null))
                 {
                     upScore += block.GetHomeCount() * 2;
+
                 }
             }
             foreach (DirtBlock block in down)
@@ -271,12 +272,14 @@ public class Digger : MonoBehaviour
             if (currentBlock._isGold)
             {
                 this._hasGold = true;
+                currentBlock.DecrementGoldAmount();
             }
             ChooseMove(upBlocks, downBlocks, rightBlocks, leftBlocks, currentBlock);
             
-            if (_map.GetBlock(_diggerSettings.Position.x, _diggerSettings.Position.y) != null && !_map.GetBlock(_diggerSettings.Position.x, _diggerSettings.Position.y)._isAir)
+            if (currentBlock != null && !currentBlock._isAir && !currentBlock._isGold)
             {
                 this.DigTime += this.DigPenalty;
+
                 currentBlock.SetIsAir(true);
                 currentBlock.gameObject.GetComponent<Renderer>().enabled = false;
             }
