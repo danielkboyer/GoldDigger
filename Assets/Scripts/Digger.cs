@@ -80,6 +80,7 @@ public class Digger : MonoBehaviour
     /// <summary>
     /// called when the agent reaches their destination and they need to choose where to move next
     /// </summary>
+    // on.GetGoldCount(
     void ChooseMove(DirtBlock[] up, DirtBlock[] down, DirtBlock[] right, DirtBlock[] left, DirtBlock on)
     {
         System.Random random = new System.Random();
@@ -104,6 +105,72 @@ public class Digger : MonoBehaviour
         if (_map.GetBlock(_diggerSettings.Position.x, _diggerSettings.Position.y - 1) == null)
         {
             downScore = -double.MaxValue;
+        }
+
+        if (this._hasGold)
+        {
+            foreach (DirtBlock block in up)
+            {
+                if (!(block == null))
+                {
+                    upScore += block.GetHomeCount() * 2;
+                }
+            }
+            foreach (DirtBlock block in down)
+            {
+                if (!(block == null))
+                {
+                    downScore += block.GetHomeCount() * 2;
+                }
+            }
+            foreach (DirtBlock block in left)
+            {
+                if (!(block == null))
+                {
+                    leftScore += block.GetHomeCount() * 2;
+                }
+            }
+            foreach (DirtBlock block in right)
+            {
+                if (!(block == null))
+                {
+                    rightScore += block.GetHomeCount() * 2;
+                }
+            }
+
+            
+        }else
+        {
+            
+            foreach (DirtBlock block in up)
+            {
+                if (!(block == null))
+                {
+                    upScore += block.GetGoldCount() * 2;
+                }
+            }
+            foreach (DirtBlock block in down)
+            {
+                if (!(block == null))
+                {
+                    downScore += block.GetGoldCount() * 2;
+                }
+            }
+            foreach (DirtBlock block in left)
+            {
+                if (!(block == null))
+                {
+                    leftScore += block.GetGoldCount() * 2;
+                }
+            }
+            foreach (DirtBlock block in right)
+            {
+                if (!(block == null))
+                {
+                    rightScore += block.GetGoldCount() * 2;
+                }
+            }
+
         }
 
 
@@ -198,6 +265,10 @@ public class Digger : MonoBehaviour
                 rightBlocks[x] = _map.GetBlock(_diggerSettings.Position.x + 1 + x, _diggerSettings.Position.y);
             }
             
+            if (currentBlock._isGold)
+            {
+                this._hasGold = true;
+            }
             ChooseMove(upBlocks, downBlocks, rightBlocks, leftBlocks, currentBlock);
             
             if (_map.GetBlock(_diggerSettings.Position.x, _diggerSettings.Position.y) != null && !_map.GetBlock(_diggerSettings.Position.x, _diggerSettings.Position.y)._isAir)
