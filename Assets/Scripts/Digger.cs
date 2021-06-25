@@ -180,6 +180,15 @@ public class Digger : MonoBehaviour
             DirtBlock[] rightBlocks = new DirtBlock[_diggerSettings.SightDistance];
             DirtBlock currentBlock = _map.GetBlock(_diggerSettings.Position.x, _diggerSettings.Position.y);
 
+            //add crumbs
+            if (_hasGold)
+            {
+                currentBlock.AddGoldCrumb();
+            }
+            else
+            {
+                currentBlock.AddHomeCrumb();
+            }
             for (int x = 0; x < _diggerSettings.SightDistance; x++)
             {
 

@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class DirtBlock : MonoBehaviour
@@ -11,15 +12,17 @@ public class DirtBlock : MonoBehaviour
     private int _x;
     private int _y;
 
-    public int HomeBreadCrumbs;
-    public int GoldBreadCrumbs;
+    private List<BreadCrumb> _breadCrumbs = new List<BreadCrumb>();
 
     public bool _isGold;
     public int GoldAmount;
+
+
+    public GameObject BreadCrumbPrefab;
+
     // Start is called before the first frame update
     void Start()
     {
-        
     }
 
     public void Init(int x, int y, bool isAir, bool isDug, bool isGold, int goldAmount)
@@ -45,10 +48,50 @@ public class DirtBlock : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        int x = 0;
+        while (x < _breadCrumbs.Count)
+        {
+            if (!_breadCrumbs[x].IsAlive(Time.deltaTime))
+            {
+                _breadCrumbs.RemoveAt(x);
+                continue;
+            }
+
+            x++;
+        }
+    }
+
+
+    public int GetGoldCount()
+    {
+        return _breadCrumbs.Count(t => t.GoldCrumb);
+    }
+
+    public int GetHomeCount()
+    {
+        return _breadCrumbs.Count(t => t.HomeCrumb);
+    }
+    public void AddGoldCrumb()
+    {
+        var xPos = Random.Range(_x - transform.localScale.x / 2, _x + transform.localScale.x / 2);
+        var yPos = Random.Range(_y - transform.localScale.y / 2, _y + transform.localScale.y / 2);
+        var goldCrumb = Instantiate(BreadCrumbPrefab, new Vector2(xPos, yPos), Quaternion.identity).GetComponent<BreadCrumb>();
+        goldCrumb.Init(false, true);
+        _breadCrumbs.Add(goldCrumb);
+    }
+
+    public void AddHomeCrumb()
+    {
+        var xPos = Random.Range(_x - transform.localScale.x / 2, _x + transform.localScale.x / 2);
+        var yPos = Random.Range(_y - transform.localScale.y / 2, _y + transform.localScale.y / 2);
+        var breadCrumb = Instantiate(BreadCrumbPrefab, new Vector2(xPos, yPos), Quaternion.identity).GetComponent<BreadCrumb>();
+        breadCrumb.Init(true, false);
+        _breadCrumbs.Add(breadCrumb);
     }
     public void SetIsAir(bool air)
     {
         this._isAir = air;
     }
 }
+
+
