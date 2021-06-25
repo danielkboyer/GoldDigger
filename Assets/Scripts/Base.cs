@@ -21,6 +21,9 @@ public class Base : MonoBehaviour,IMap
     private bool _isInit = false;
 
     private int _id;
+
+
+    private int currentId = 0;
     // Start is called before the first frame update
     void Start()
     {
@@ -58,7 +61,7 @@ public class Base : MonoBehaviour,IMap
     void SpawnDigger()
     {
         var digger = Instantiate(_diggerPrefab, new Vector2(_settings.coord.x, _settings.coord.y), Quaternion.identity).GetComponent<Digger>();
-        digger.Init(_map,_settings.DiggerSetting,_id);
+        digger.Init(_map,_settings.DiggerSetting,_id,currentId++);
         _currentDiggers++;
     }
 

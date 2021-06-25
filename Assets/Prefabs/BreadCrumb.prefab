@@ -97,4 +97,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   HomeCrumb: 0
   GoldCrumb: 0
-  AliveTime: 5
+  AliveTime: 30

@@ -53,13 +53,15 @@ public class Digger : MonoBehaviour
     // random    - sir rando
 
     // Start is called before the first frame update
+
+    public string Id;
     void Start()
     {
 
     }
 
 
-    public void Init(IMap map, DiggerSettings start, int baseID)
+    public void Init(IMap map, DiggerSettings start, int baseID, int id)
     {
         this._diggerSettings = new DiggerSettings() {
             DigPenalty = start.DigPenalty,
@@ -79,6 +81,7 @@ public class Digger : MonoBehaviour
         this._hasGold = false;
         this._isStunned = false;
         this._stunTime = 0;
+        this.Id = baseID + " " + id;
     }
     /// <summary>
     /// called when the agent reaches their destination and they need to choose where to move next
@@ -116,7 +119,7 @@ public class Digger : MonoBehaviour
             {
                 if (!(block == null))
                 {
-                    upScore += block.GetHomeCount() * 2;
+                    upScore += block.GetOldestHome(_baseID) * 2;
 
                 }
             }
@@ -124,21 +127,21 @@ public class Digger : MonoBehaviour
             {
                 if (!(block == null))
                 {
-                    downScore += block.GetHomeCount() * 2;
+                    downScore += block.GetOldestHome(_baseID) * 2;
                 }
             }
             foreach (DirtBlock block in left)
             {
                 if (!(block == null))
                 {
-                    leftScore += block.GetHomeCount() * 2;
+                    leftScore += block.GetOldestHome(_baseID) * 2;
                 }
             }
             foreach (DirtBlock block in right)
             {
                 if (!(block == null))
                 {
-                    rightScore += block.GetHomeCount() * 2;
+                    rightScore += block.GetOldestHome(_baseID) * 2;
                 }
             }
 
@@ -150,28 +153,28 @@ public class Digger : MonoBehaviour
             {
                 if (!(block == null))
                 {
-                    upScore += block.GetGoldCount() * 2;
+                    upScore += block.GetOldestGold(_baseID) * 2;
                 }
             }
             foreach (DirtBlock block in down)
             {
                 if (!(block == null))
                 {
-                    downScore += block.GetGoldCount() * 2;
+                    downScore += block.GetOldestGold(_baseID) * 2;
                 }
             }
             foreach (DirtBlock block in left)
             {
                 if (!(block == null))
                 {
-                    leftScore += block.GetGoldCount() * 2;
+                    leftScore += block.GetOldestGold(_baseID) * 2;
                 }
             }
             foreach (DirtBlock block in right)
             {
                 if (!(block == null))
                 {
-                    rightScore += block.GetGoldCount() * 2;
+                    rightScore += block.GetOldestGold(_baseID) * 2;
                 }
             }
 
@@ -254,24 +257,25 @@ public class Digger : MonoBehaviour
             //add crumbs
             if (_hasGold)
             {
-                currentBlock.AddGoldCrumb();
+                currentBlock.AddGoldCrumb(Id);
             }
             else
             {
-                currentBlock.AddHomeCrumb();
+                currentBlock.AddHomeCrumb(Id);
             }
             for (int x = 0; x < _diggerSettings.SightDistance; x++)
             {
 
-                upBlocks[x] = _map.GetBlock(_diggerSettings.Position.x, _diggerSettings.Position.y - 1 - x);
-                downBlocks[x] = _map.GetBlock(_diggerSettings.Position.x, _diggerSettings.Position.y + 1 + x);
+                upBlocks[x] = _map.GetBlock(_diggerSettings.Position.x, _diggerSettings.Position.y + 1 + x);
+                downBlocks[x] = _map.GetBlock(_diggerSettings.Position.x, _diggerSettings.Position.y - 1 - x);
                 leftBlocks[x] = _map.GetBlock(_diggerSettings.Position.x - 1 - x, _diggerSettings.Position.y);
                 rightBlocks[x] = _map.GetBlock(_diggerSettings.Position.x + 1 + x, _diggerSettings.Position.y);
             }
             
-            if (currentBlock._isGold)
+            if (currentBlock._isGold && currentBlock.GoldAmount > 0)
             {
                 this._hasGold = true;
+                currentBlock.AddGoldCrumb(Id);
                 currentBlock.DecrementGoldAmount();
             }
             ChooseMove(upBlocks, downBlocks, rightBlocks, leftBlocks, currentBlock);

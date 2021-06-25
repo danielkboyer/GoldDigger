@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 6456527100122403249}
   m_Layer: 6
   m_Name: Digger
-  m_TagString: Player
+  m_TagString: Digger
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -97,6 +97,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   MoveTowards: 0
+  Id: 
 --- !u!61 &6456527100122403249
 BoxCollider2D:
   m_ObjectHideFlags: 0

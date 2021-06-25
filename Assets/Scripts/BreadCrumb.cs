@@ -11,15 +11,16 @@ public class BreadCrumb : MonoBehaviour
 
     private float _secondsAlive = 0;
 
-
+    public string Id;
     // Start is called before the first frame update
     void Start()
     {
         
     }
 
-    public void Init(bool homeCrumb, bool goldCrumb)
+    public void Init(bool homeCrumb, bool goldCrumb, string id)
     {
+        this.Id = id;
         this.HomeCrumb = homeCrumb;
         this.GoldCrumb = goldCrumb;
 
@@ -31,6 +32,11 @@ public class BreadCrumb : MonoBehaviour
         {
             GetComponent<SpriteRenderer>().color = Color.yellow;
         }
+    }
+
+    public float GetAge()
+    {
+        return _secondsAlive;
     }
 
     public bool IsAlive(float secondsElapsed)
