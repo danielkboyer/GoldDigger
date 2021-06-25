@@ -85,7 +85,7 @@ public class Map : MonoBehaviour,IMap
 
              
                 //check if this block should be air or not
-                db.Init(x, y, y >= GridSizeY - GridAirY, false, goldCoords.Any(t => t.x == x && t.y == y),GoldAmount);
+                db.Init(x, y, y >= GridSizeY - GridAirY, false, goldCoords.Any(t => t.x == x && t.y == y),GoldSize);
 
                 _grid.AddBlock(db, x, y);
 
