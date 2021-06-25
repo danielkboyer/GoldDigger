@@ -61,7 +61,7 @@ public class Base : MonoBehaviour,IMap
     void SpawnDigger()
     {
         var digger = Instantiate(_diggerPrefab, new Vector2(_settings.coord.x, _settings.coord.y), Quaternion.identity).GetComponent<Digger>();
-        digger.Init(_map,_settings.DiggerSetting,_id,currentId++, this._settings.coord.x, this._settings.coord.y);
+        digger.Init(_map,_settings.DiggerSetting,_id,currentId++);
         _currentDiggers++;
     }
 

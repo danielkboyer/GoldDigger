@@ -9,8 +9,8 @@ public class DirtBlock : MonoBehaviour
 
     private bool _isDug;
 
-    public int _x;
-    public int _y;
+    private int _x;
+    private int _y;
 
     private List<BreadCrumb> _breadCrumbs = new List<BreadCrumb>();
 
@@ -65,6 +65,7 @@ public class DirtBlock : MonoBehaviour
     public void DecrementGoldAmount()
     {
         this.GoldAmount -= 1;
+        UnityEngine.Debug.Log(this.GoldAmount);
         if (this.GoldAmount <= 0)
         {
             this.gameObject.GetComponent<Renderer>().enabled = false;
