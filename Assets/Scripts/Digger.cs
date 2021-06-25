@@ -67,8 +67,11 @@ public class Digger : MonoBehaviour
             Position = new Coord() { x = start.Position.x, y = start.Position.y },
             Speed = start.Speed,
             mentality = new Mentality() { ProbabilityOfFight = start.mentality.ProbabilityOfFight },
-            moveTowards = start.moveTowards
+            moveTowards = start.moveTowards,
+            color = start.color
+            
         };
+        GetComponent<SpriteRenderer>().color = _diggerSettings.color;
         this.MoveTowards = _diggerSettings.moveTowards;
         this._map = map;
         isInit = true;
@@ -118,8 +121,10 @@ public class Digger : MonoBehaviour
 
         if (this._hasGold)
         {
-            if(up.Any(t=>t != null))
-                upScore += Math.Pow(up.Where(t => t != null).Max(t => t.GetOldestHome(_baseID)),2);
+            if (up.Any(t => t != null))
+            {
+                upScore += Math.Pow(up.Where(t => t != null).Max(t => t.GetOldestHome(_baseID)), 2);
+            }
             if (down.Any(t => t != null))
                 downScore += Math.Pow(down.Where(t => t != null).Max(t => t.GetOldestHome(_baseID)), 2);
             if (left.Any(t => t != null))
@@ -218,11 +223,11 @@ public class Digger : MonoBehaviour
             //add crumbs
             if (_hasGold)
             {
-                currentBlock.AddGoldCrumb(Id);
+                currentBlock.AddGoldCrumb(Id,false);
             }
             else
             {
-                currentBlock.AddHomeCrumb(Id);
+                currentBlock.AddHomeCrumb(Id,false);
             }
             for (int x = 0; x < _diggerSettings.SightDistance; x++)
             {
@@ -236,7 +241,7 @@ public class Digger : MonoBehaviour
             if (currentBlock._isGold)
             {
                 this._hasGold = true;
-                currentBlock.AddGoldCrumb(Id);
+                currentBlock.AddGoldCrumb(Id,true);
                 currentBlock.DecrementGoldAmount();
             }
             ChooseMove(upBlocks, downBlocks, rightBlocks, leftBlocks, currentBlock);
@@ -279,6 +284,7 @@ public class Digger : MonoBehaviour
                     this._hasGold = true;
                 }
                 diggerOther._isStunned = true;
+                diggerOther.GetComponent<SpriteRenderer>().color = Color.grey;
                 diggerOther.DigTime += result[1];
             }
             else if (result[0] == 1)
@@ -289,6 +295,7 @@ public class Digger : MonoBehaviour
                     this._hasGold = false;
                 }
                 this._isStunned = true;
+                GetComponent<SpriteRenderer>().color = Color.grey;
                 this.DigTime += result[1];
             }
             else
@@ -311,9 +318,11 @@ public class Digger : MonoBehaviour
         if (collider.tag != "Base")
             return;
 
+        var baseScript = collider.gameObject.GetComponent<Base>();
+        _map.GetBlock(baseScript._settings.coord.x, baseScript._settings.coord.y).AddHomeCrumb(Id, true);
         if (!_hasGold)
             return;
-        var baseScript = collider.gameObject.GetComponent<Base>();
+      
         baseScript._totalGold += 1;
         _hasGold = false;
     }
@@ -325,14 +334,16 @@ public class Digger : MonoBehaviour
 
         if (this.DigTime > 0)
         {
-            if(_isStunned == true)
-            {
-                _isStunned = false;
-            }
+            
             this.DigTime -= Time.deltaTime;
         }
         else
         {
+            if (_isStunned == true)
+            {
+                GetComponent<SpriteRenderer>().color = _diggerSettings.color;
+                _isStunned = false;
+            }
             _currentTime += Time.deltaTime;
             this.DigTime = 0;
             if (_currentTime * _diggerSettings.Speed >= _moveTime)
@@ -369,6 +380,8 @@ public struct DiggerSettings
     public Mentality mentality;
 
     public Move moveTowards;
+
+    public Color color;
 
 
 }

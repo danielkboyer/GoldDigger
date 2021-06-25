@@ -6,7 +6,8 @@ public class BreadCrumb : MonoBehaviour
 {
     public bool HomeCrumb;
     public bool GoldCrumb;
-
+    public bool AtBase;
+    public bool AtGold;
     public float AliveTime = 5;
 
     private float _secondsAlive = 0;
@@ -18,12 +19,13 @@ public class BreadCrumb : MonoBehaviour
         
     }
 
-    public void Init(bool homeCrumb, bool goldCrumb, string id)
+    public void Init(bool homeCrumb, bool goldCrumb, string id, bool atBase, bool atGold)
     {
         this.Id = id;
         this.HomeCrumb = homeCrumb;
         this.GoldCrumb = goldCrumb;
-
+        this.AtBase = atBase;
+        this.AtGold = atGold;
         if (this.HomeCrumb)
         {
             GetComponent<SpriteRenderer>().color = Color.grey;

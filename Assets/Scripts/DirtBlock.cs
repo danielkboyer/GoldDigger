@@ -78,34 +78,40 @@ public class DirtBlock : MonoBehaviour
     {
         if (_breadCrumbs.Where(t => t.GoldCrumb && t.Id.Split(' ')[0] == baseId.ToString()).Count() <= 0)
             return 0;
-        return _breadCrumbs.Where(t=>t.GoldCrumb && t.Id.Split(' ')[0] == baseId.ToString()).Max(t => t.GetAge());
+        var max = _breadCrumbs.Where(t=>t.GoldCrumb && t.Id.Split(' ')[0] == baseId.ToString()).Max(t => t.GetAge());
+        if (_breadCrumbs.Any(t => t.AtGold))
+            return int.MaxValue;
+        return max;
     }
 
     public float GetOldestHome(int baseId)
     {
         if (_breadCrumbs.Where(t => t.HomeCrumb && t.Id.Split(' ')[0] == baseId.ToString()).Count() <= 0)
             return 0;
-        return _breadCrumbs.Where(t => t.HomeCrumb && t.Id.Split(' ')[0] == baseId.ToString()).Max(t => t.GetAge());
+        var max =  _breadCrumbs.Where(t => t.HomeCrumb && t.Id.Split(' ')[0] == baseId.ToString()).Max(t => t.GetAge());
+        if (_breadCrumbs.Any(t => t.AtBase))
+            return int.MaxValue;
+        return max;
     }
-    public void AddGoldCrumb(string agentId)
+    public void AddGoldCrumb(string agentId,bool atGold)
     {
         if (_breadCrumbs.Any(t => t.Id == agentId && t.GoldCrumb))
             return;
         var xPos = Random.Range(_x - transform.localScale.x / 2, _x + transform.localScale.x / 2);
         var yPos = Random.Range(_y - transform.localScale.y / 2, _y + transform.localScale.y / 2);
         var goldCrumb = Instantiate(BreadCrumbPrefab, new Vector2(xPos, yPos), Quaternion.identity).GetComponent<BreadCrumb>();
-        goldCrumb.Init(false, true,agentId);
+        goldCrumb.Init(false, true,agentId,false,atGold);
         _breadCrumbs.Add(goldCrumb);
     }
 
-    public void AddHomeCrumb(string agentId)
+    public void AddHomeCrumb(string agentId,bool atHome)
     {
         if (_breadCrumbs.Any(t => t.Id == agentId && t.HomeCrumb))
             return;
         var xPos = Random.Range(_x - transform.localScale.x / 2, _x + transform.localScale.x / 2);
         var yPos = Random.Range(_y - transform.localScale.y / 2, _y + transform.localScale.y / 2);
         var breadCrumb = Instantiate(BreadCrumbPrefab, new Vector2(xPos, yPos), Quaternion.identity).GetComponent<BreadCrumb>();
-        breadCrumb.Init(true, false,agentId);
+        breadCrumb.Init(true, false,agentId,atHome,false);
         _breadCrumbs.Add(breadCrumb);
     }
     public void SetIsAir(bool air)

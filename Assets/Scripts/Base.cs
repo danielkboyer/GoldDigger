@@ -10,7 +10,7 @@ public class Base : MonoBehaviour,IMap
 
     private int _currentDiggers = 0;
 
-    private BaseSetting _settings;
+    public BaseSetting _settings;
 
     private float _currentTime;
 

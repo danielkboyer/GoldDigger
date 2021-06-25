@@ -147,6 +147,7 @@ public struct BaseSetting {
     public float SpawnRate;
 
     public DiggerSettings DiggerSetting;
+
 }
 
 
