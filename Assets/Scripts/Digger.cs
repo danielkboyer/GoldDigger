@@ -25,7 +25,7 @@ public class Digger : MonoBehaviour
     /// <summary>
     /// Time left to stop and dig
     /// </summary>
-    private float DigTime = 0;
+    public float DigTime = 0;
 
     /// <summary>
     /// Penalty for digging
@@ -43,8 +43,7 @@ public class Digger : MonoBehaviour
 
     private bool _isStunned;
 
-    private float _stunTime;
-
+    private float STUN = 3;
     private string _mentality;
     // copycat   - cooperate then copy other player moves
     // cooperate - always cooperate
@@ -78,7 +77,6 @@ public class Digger : MonoBehaviour
         this._isFighting = false;
         this._hasGold = false;
         this._isStunned = false;
-        this._stunTime = 0;
     }
     /// <summary>
     /// called when the agent reaches their destination and they need to choose where to move next
@@ -212,29 +210,19 @@ public class Digger : MonoBehaviour
         }
 
     }
-    private bool CheckTime()
-    {
-        if (this._stunTime % 60 < 2)
-        {
-            return false;
-        }
-        else
-        {
-            return false;
-        }
-    }
 
-    private void OnCollisionEnter2D(Collision2D collision)
+    private void DiggerBattle(Collider2D collision)
     {
-        // digger will only fight another digger that is from another base
-        // and only the digger from > baseID will initiate the funct call
         var diggerOther = collision.gameObject.GetComponent<Digger>();
+        if (diggerOther._isStunned || _isStunned)
+        {
+            return;
+        }
         if (this._baseID > diggerOther._baseID)
         {
-            Debug.Log("collision");
-            this._isFighting = true;
             battles battle = new battles(this._mentality, diggerOther._mentality);
-            if (battle.battle() == 0)
+            int result = battle.battle();
+            if (result == 0)
             {
                 if (this._hasGold == false && diggerOther._hasGold == true)
                 {
@@ -242,9 +230,9 @@ public class Digger : MonoBehaviour
                     this._hasGold = true;
                 }
                 diggerOther._isStunned = true;
-                diggerOther._stunTime = Time.deltaTime;
+                diggerOther.DigTime += STUN;
             }
-            else
+            else if (result == 1)
             {
                 if (this._hasGold == true && diggerOther._hasGold == false)
                 {
@@ -252,9 +240,22 @@ public class Digger : MonoBehaviour
                     this._hasGold = false;
                 }
                 this._isStunned = true;
-                this._stunTime = Time.deltaTime;
+                this.DigTime += STUN;
             }
+            else
+                return;
         }
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        Debug.Log("collision");
+
+        // digger will only fight another digger that is from another base
+        // and only the digger from > baseID will initiate the funct call
+        if (collision.tag != "Digger")
+            return;
+        DiggerBattle(collision);
     }
     // Update is called once per frame
     void Update()
@@ -263,20 +264,14 @@ public class Digger : MonoBehaviour
             return;
         if (_isFighting)
             return;
-        if (_isStunned)
-        {
-            if (CheckTime())
-            {
-                return;
-            }
-            else
-            {
-                this._isStunned = false;
-            }
-        }
+        
 
         if (this.DigTime > 0)
         {
+            if(_isStunned == true)
+            {
+                _isStunned = false;
+            }
             this.DigTime -= Time.deltaTime;
         }
         else

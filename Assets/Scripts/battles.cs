@@ -2,13 +2,14 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 
+
 public class battles
 {
     private int COUNT;// rounds of battles
 
     private int p1Score;
     private int p2Score;
-    
+
     private string p1Mentality;
     private string p2Mentality;
 
@@ -18,7 +19,7 @@ public class battles
     private bool p1HasCheated;
     private bool p2HasCheated;
 
-    public battles(string p1M, string p2M) 
+    public battles(string p1M, string p2M)
     {
         //this.p1Score = p1S;
         this.p1Mentality = p1M;
@@ -26,7 +27,7 @@ public class battles
         this.p2Mentality = p2M;
         COUNT = 5;
         p1choices = new string[COUNT];
-        p1choices = new string[COUNT];
+        p2choices = new string[COUNT];
         p1HasCheated = false;
         p2HasCheated = false;
     }
@@ -37,11 +38,11 @@ public class battles
         {
             return "cooperate";
         }
-        else if(m == "random")
+        else if (m == "random")
         {
-            Random rnd = new Random();
+            System.Random rnd = new System.Random();
             int r = rnd.Next(0, 2);
-            if (r == 0) 
+            if (r == 0)
             {
                 return "cooperate";
             }
@@ -61,7 +62,7 @@ public class battles
         }
         if (mentality == "random")
         {
-            Random rnd = new Random();
+            System.Random rnd = new System.Random();
             int r = rnd.Next(0, 2);
             if (r == 0)
             {
@@ -121,7 +122,7 @@ public class battles
         }
     }
 
-    private void UpdateScores(int p1, int p2) 
+    private void UpdateScores(int p1, int p2)
     {
         this.p1Score = this.p1Score + p1;
         this.p2Score = this.p2Score + p2;
@@ -133,40 +134,57 @@ public class battles
     /// </summary>
     public int battle()
     {
-        string p1choice = FirstMove(this.p1Mentality);
-        string p2choice = FirstMove(this.p2Mentality);
-        calcScore(p1choice, p2choice);
+        this.p1choices[0] = FirstMove(this.p1Mentality);
+        this.p2choices[0] = FirstMove(this.p2Mentality);
+        calcScore(p1choices[0], p2choices[0]);
+        Console.WriteLine(p1Score + ", " + p2Score);
 
-        if (p1choice == "cheat")
+        if (p1choices[0] == "cheat")
         {
             p1HasCheated = true;
         }
-        if (p2choice == "cheat")
+        if (p2choices[0] == "cheat")
         {
             p2HasCheated = true;
         }
 
 
-        for (int i = 1; i < 5; i++) 
+        for (int i = 1; i < 5; i++)
         {
-            p1choice = NextMove(p1Mentality, p2choices[i-1], "first");
-            p2choice = NextMove(p2Mentality, p1choices[i-1], "second");
-            calcScore(p1choice,p2choice);
-            if (p1choice == "cheat")
+            p1choices[i] = NextMove(p1Mentality, p2choices[i - 1], "first");
+            p2choices[i] = NextMove(p2Mentality, p1choices[i - 1], "second");
+            calcScore(p1choices[i], p2choices[i]);
+            if (p1choices[i] == "cheat")
             {
                 p1HasCheated = true;
             }
-            if (p2choice == "cheat")
+            if (p2choices[i] == "cheat")
             {
                 p2HasCheated = true;
             }
+            Console.WriteLine(p1Score + ", " + p2Score);
         }
 
-        if (p1Score >= p2Score)
+        if (p1Score > p2Score)
         {
             return 0;
         }
-        return 1;
+        else if (p1Score < p2Score)
+        {
+            return 1;
+        }
+        else
+        {
+            return -1;
+        }
+    }
+
+    static void Main(string[] args)
+    {
+        string a1 = "cheat";
+        string a2 = "cooperate";
+        battles battle = new battles(a1, a2);
+        Console.WriteLine(battle.battle());
     }
 
 }
