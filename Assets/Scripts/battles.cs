@@ -24,7 +24,7 @@ public class battles
     {
         this.p1Mentality = p1M;
         this.p2Mentality = p2M;
-        Debug.Log("a1: " + p1M + ", a2:" + p2M);
+        //Debug.Log("a1: " + p1M + ", a2:" + p2M);
         COUNT = 5;
         p1choices = new string[COUNT];
         p2choices = new string[COUNT];
@@ -132,12 +132,12 @@ public class battles
     /// <summary>
     /// return 0 or 1, 0 if function caller won
     /// </summary>
-    public int battle()
+    public int[] battle()
     {
         this.p1choices[0] = FirstMove(this.p1Mentality);
         this.p2choices[0] = FirstMove(this.p2Mentality);
         calcScore(p1choices[0], p2choices[0]);
-        Debug.Log(p1Score + ", " + p2Score);
+        //Debug.Log(p1Score + ", " + p2Score);
 
         if (p1choices[0] == "cheat")
         {
@@ -162,20 +162,25 @@ public class battles
             {
                 p2HasCheated = true;
             }
-            Debug.Log(p1Score + ", " + p2Score);
+            //Debug.Log(p1Score + ", " + p2Score);
         }
 
         if (p1Score > p2Score)
         {
-            return 0;
+            int t = (p1Score - p2Score) / 2;
+            int[] ret = { 0, t };
+            return ret;
         }
         else if (p1Score < p2Score)
         {
-            return 1;
+            int t = (p2Score - p1Score) / 2;
+            int[] ret = { 1, t };
+            return ret;
         }
         else
         {
-            return -1;
+            int[] ret = { 1, 0 };
+            return ret;
         }
     }
 

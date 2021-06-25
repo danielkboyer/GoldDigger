@@ -42,7 +42,7 @@ public class Digger : MonoBehaviour
 
     public bool _isStunned;
 
-    private float STUN = 3;
+    private float STUN = 4;
     public string _mentality;
     // copycat   - cooperate then copy other player moves
     // cooperate - always cooperate
@@ -254,7 +254,10 @@ public class Digger : MonoBehaviour
 
     private void DiggerBattle(Collider2D collision)
     {
-
+        if (DigTime > 0)
+        {
+            return;
+        }
         // digger will only fight another digger that is from another base
         // and only the digger from > baseID will initiate the funct call
         if (collision.tag != "Player")
@@ -267,8 +270,8 @@ public class Digger : MonoBehaviour
         if (this._baseID > diggerOther._baseID)
         {
             battles battle = new battles(this._mentality, diggerOther._mentality);
-            int result = battle.battle();
-            if (result == 0)
+            int[] result = battle.battle();
+            if (result[0] == 0)
             {
                 if (this._hasGold == false && diggerOther._hasGold == true)
                 {
@@ -276,9 +279,9 @@ public class Digger : MonoBehaviour
                     this._hasGold = true;
                 }
                 diggerOther._isStunned = true;
-                diggerOther.DigTime += DigPenalty;
+                diggerOther.DigTime += result[1];
             }
-            else if (result == 1)
+            else if (result[0] == 1)
             {
                 if (this._hasGold == true && diggerOther._hasGold == false)
                 {
@@ -286,7 +289,7 @@ public class Digger : MonoBehaviour
                     this._hasGold = false;
                 }
                 this._isStunned = true;
-                this.DigTime += DigPenalty;
+                this.DigTime += result[1];
             }
             else
             {
