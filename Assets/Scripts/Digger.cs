@@ -40,7 +40,7 @@ public class Digger : MonoBehaviour
 
     private bool _hasGold;
 
-    private bool _isStunned;
+    public bool _isStunned;
 
     private float STUN = 3;
     public string _mentality;
@@ -76,7 +76,7 @@ public class Digger : MonoBehaviour
         this._baseID = baseID;
         if (baseID == 0)
         {
-            this._mentality = "cooperative";
+            this._mentality = "cooperate";
         }
         else
         {
@@ -257,7 +257,7 @@ public class Digger : MonoBehaviour
 
         // digger will only fight another digger that is from another base
         // and only the digger from > baseID will initiate the funct call
-        if (collision.tag != "Digger")
+        if (collision.tag != "Player")
             return;
         var diggerOther = collision.gameObject.GetComponent<Digger>();
         if (diggerOther._isStunned || _isStunned)
@@ -276,7 +276,7 @@ public class Digger : MonoBehaviour
                     this._hasGold = true;
                 }
                 diggerOther._isStunned = true;
-                diggerOther.DigTime += STUN;
+                diggerOther.DigTime += DigPenalty;
             }
             else if (result == 1)
             {
@@ -286,16 +286,18 @@ public class Digger : MonoBehaviour
                     this._hasGold = false;
                 }
                 this._isStunned = true;
-                this.DigTime += STUN;
+                this.DigTime += DigPenalty;
             }
             else
+            {
                 return;
+            }
         }
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        Debug.Log("collision with: " + collision.tag);
+        //Debug.Log("collision with: " + collision.tag);
 
         HandleBaseCollision(collision);
         DiggerBattle(collision);

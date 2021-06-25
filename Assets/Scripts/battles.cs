@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEngine;
 
 
 public class battles
@@ -21,10 +22,9 @@ public class battles
 
     public battles(string p1M, string p2M)
     {
-        //this.p1Score = p1S;
         this.p1Mentality = p1M;
-        //this.p2Score = p2S;
         this.p2Mentality = p2M;
+        Debug.Log("a1: " + p1M + ", a2:" + p2M);
         COUNT = 5;
         p1choices = new string[COUNT];
         p2choices = new string[COUNT];
@@ -137,7 +137,7 @@ public class battles
         this.p1choices[0] = FirstMove(this.p1Mentality);
         this.p2choices[0] = FirstMove(this.p2Mentality);
         calcScore(p1choices[0], p2choices[0]);
-        Console.WriteLine(p1Score + ", " + p2Score);
+        Debug.Log(p1Score + ", " + p2Score);
 
         if (p1choices[0] == "cheat")
         {
@@ -162,7 +162,7 @@ public class battles
             {
                 p2HasCheated = true;
             }
-            Console.WriteLine(p1Score + ", " + p2Score);
+            Debug.Log(p1Score + ", " + p2Score);
         }
 
         if (p1Score > p2Score)
