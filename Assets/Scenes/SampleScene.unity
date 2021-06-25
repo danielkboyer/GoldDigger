@@ -253,10 +253,11 @@ MonoBehaviour:
         x: 0
         y: 0
       Speed: 5
-      DigTime: 1
+      DigPenalty: 1
       SightDistance: 2
       mentality:
         ProbabilityOfFight: 41
+      moveTowards: 0
   - coord:
       x: 10
       y: 17
@@ -267,10 +268,11 @@ MonoBehaviour:
         x: 0
         y: 0
       Speed: 10
-      DigTime: 1
+      DigPenalty: 1
       SightDistance: 2
       mentality:
         ProbabilityOfFight: 20
+      moveTowards: 0
 --- !u!4 &763897214
 Transform:
   m_ObjectHideFlags: 0

@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 4787787279080284403}
   - component: {fileID: 5038133802993146495}
   - component: {fileID: 6456527100122403249}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Digger
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -70,8 +70,8 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
+  m_SortingLayerID: 361737939
+  m_SortingLayer: 2
   m_SortingOrder: 0
   m_Sprite: {fileID: 7482667652216324306, guid: 48e93eef0688c4a259cb0eddcd8661f7, type: 3}
   m_Color: {r: 0.990566, g: 0, b: 0, a: 1}

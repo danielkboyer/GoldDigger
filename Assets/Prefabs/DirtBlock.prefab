@@ -26,7 +26,7 @@ GameObject:
   - component: {fileID: 2450660019809961064}
   - component: {fileID: 1365316051126627917}
   - component: {fileID: 5921459714777095203}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: DirtBlock
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -84,8 +84,8 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
+  m_SortingLayerID: -522062595
+  m_SortingLayer: 1
   m_SortingOrder: 0
   m_Sprite: {fileID: 7482667652216324306, guid: 48e93eef0688c4a259cb0eddcd8661f7, type: 3}
   m_Color: {r: 0.4339623, g: 0.33742514, b: 0.24768601, a: 1}
