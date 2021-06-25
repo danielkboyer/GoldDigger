@@ -295,7 +295,7 @@ public class Digger : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        Debug.Log("collision");
+        Debug.Log("collision with: " + collision.tag);
 
         HandleBaseCollision(collision);
         DiggerBattle(collision);
