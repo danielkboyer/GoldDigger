@@ -40,7 +40,6 @@ public class DirtBlock : MonoBehaviour
     }
     public void SetIsAir(bool air)
     {
-        UnityEngine.Debug.Log(string.Format("changing my isair from {0}", this._isAir ));
         this._isAir = air;
     }
 }
