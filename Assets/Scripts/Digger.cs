@@ -40,12 +40,10 @@ public class Digger : MonoBehaviour
 
     private bool _hasGold;
 
-    private bool _isFighting;
-
     private bool _isStunned;
 
     private float STUN = 3;
-    private string _mentality;
+    public string _mentality;
     // copycat   - cooperate then copy other player moves
     // cooperate - always cooperate
     // cheat     - always cheat
@@ -76,8 +74,14 @@ public class Digger : MonoBehaviour
         isInit = true;
         this.DigPenalty = start.DigPenalty;
         this._baseID = baseID;
-        this._mentality = "cooperative";
-        this._isFighting = false;
+        if (baseID == 0)
+        {
+            this._mentality = "cooperative";
+        }
+        else
+        {
+            this._mentality = "cheat";
+        }
         this._hasGold = false;
         this._isStunned = false;
         this.Id = baseID + " " + id;
@@ -313,9 +317,6 @@ public class Digger : MonoBehaviour
     {
         if (!isInit)
             return;
-        if (_isFighting)
-            return;
-        
 
         if (this.DigTime > 0)
         {
